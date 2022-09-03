@@ -1,4 +1,8 @@
 ---
+import contentfulClient from '../lib/contentful'
+const title = "Astro & Contentful"
+// more fetching options in https://contentful.github.io/contentful.js/contentful/9.1.34/ContentfulClientAPI.html
+const {items} = await contentfulClient.getEntries()
 ---
 
 <html lang="en">
@@ -7,9 +11,10 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>{title}</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<h1>{title}</h1>
+		<pre><code>{JSON.stringify(items,null, 2)}</code></pre>
 	</body>
 </html>
