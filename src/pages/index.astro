@@ -2,7 +2,20 @@
 import contentfulClient from "../lib/contentful";
 const title = "Astro & Contentful";
 // more fetching options in https://contentful.github.io/contentful.js/contentful/9.1.34/ContentfulClientAPI.html
-const { items } = await contentfulClient.getEntries();
+let blogPosts = await contentfulClient
+  .getEntries({
+    content_type: "blogPost",
+  })
+  .then((entries) => {
+    const items = entries.items.map((entry) => {
+      const { title, description } = entry.fields;
+      return {
+        title,
+        description,
+      };
+    });
+    return items;
+  });
 ---
 
 <html lang="en">
@@ -15,6 +28,13 @@ const { items } = await contentfulClient.getEntries();
   </head>
   <body>
     <h1>{title}</h1>
-    <pre><code>{JSON.stringify(items,null, 2)}</code></pre>
+    {
+      blogPosts.map((post) => (
+        <div>
+          <h2>{post.title}</h2>
+          <p>{post.description}</p>
+        </div>
+      ))
+    }
   </body>
 </html>
